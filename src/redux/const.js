@@ -1,0 +1,5 @@
+export const CREDIT_SENDED = "CREDIT_SENDED";
+export const LOADING_START = "LOADING_START";
+export const LOADING_STOP = "LOADING_STOP";
+export const CREDIT_RESPONSE = "CREDIT_RESPONSE";
+export const SAVE_CREDIT = "SAVE_CREDIT";
