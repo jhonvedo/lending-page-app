@@ -15,8 +15,8 @@ const useStyles = makeStyles((theme) => ({
    borderRadius:'9px',
    boxShadow:'0px 0px 10px 0px rgb(0 0 0 / 18%)',
    backgroundColor:'white',
-   margin:'8px'
-
+   margin:'8px',
+  minHeight:'280px'
  }
 }));
 

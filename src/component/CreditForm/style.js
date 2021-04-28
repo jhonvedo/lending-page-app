@@ -10,5 +10,8 @@ export default  makeStyles({
     },
     input:{
         width:'100%'
+    },
+    progressRoot:{
+        textAlign:'center'
     }
 });

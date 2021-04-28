@@ -1,9 +1,8 @@
-import React,{useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import View from './view';
-import {sendCredit} from '../../redux/actions/credit';
-import {useDispatch,useSelector} from 'react-redux';
+import { sendCredit } from '../../redux/actions/credit';
+import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -12,61 +11,49 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Alert from '@material-ui/lab/Alert';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    '& > * + *': {
-      marginLeft: theme.spacing(2),
-    },
-  },
-}));
 
-export function CreditForm(props){
-    const dispatch = useDispatch();
-    const classes = useStyles();
-    // const loading = useSelector(state => state.loading);
-    const lastCredit = useSelector(state => state.lastCredit);
-    const [open, setOpen] = useState(false);
 
-    useEffect(() => {
-      if(lastCredit.result !== undefined)
-        setOpen(true);
-    }, [lastCredit])
+export function CreditForm(props) {
+  const dispatch = useDispatch();
+  const loading = useSelector(state => state.loading);
+  const lastCredit = useSelector(state => state.lastCredit);
+  const [open, setOpen] = useState(false);
 
-    const handleClickOpen = () => {
+  useEffect(() => {
+    if (lastCredit.result !== undefined)
       setOpen(true);
-    };
+  }, [lastCredit])
 
-    const handleClose = () => {
-      setOpen(false);
-    };
-   
-    const handlerOnSend =(event)=>{
-        dispatch(sendCredit(event));
-    }
-    const currencyFormat=(num)=> {
-      if(num === undefined)
-      num =0;
+  const handleClose = () => {
+    setOpen(false);
+  };
 
-      return '$' + num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-   }
+  const handlerOnSend = (event) => {
+    dispatch(sendCredit(event));
+  }
+  const currencyFormat = (num) => {
+    if (num === undefined)
+      num = 0;
 
-   const generateAlertByResult = (result)=>{
-    switch (result) {
-      case "Approved":
-          return (<Alert severity="success"><b>{result}</b>, Congratulation!</Alert>);
-      case "Undecided":
-          return (<Alert severity="warning"><b>{result}</b></Alert>);
-      case "Declined":
-          return (<Alert severity="error"><b>{result}</b></Alert>);
-
-      default:
-          return (<Alert severity="info"><b>{result}</b></Alert>);
+    return '$' + num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
   }
 
-   }
-    return (
-        <div {...props}>  
+  const generateAlertByResult = (result) => {
+    switch (result) {
+      case "Approved":
+        return (<Alert severity="success"><b>{result}</b>, Congratulation!</Alert>);
+      case "Undecided":
+        return (<Alert severity="warning"><b>{result}</b></Alert>);
+      case "Declined":
+        return (<Alert severity="error"><b>{result}</b></Alert>);
+
+      default:
+        return (<Alert severity="info"><b>{result}</b></Alert>);
+    }
+  }
+
+  return (
+    <div {...props}>
 
 
       <Dialog
@@ -77,34 +64,25 @@ export function CreditForm(props){
         <DialogTitle id="alert-dialog-title">{"Credit APP"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Hi <b>{lastCredit.info.businessName}</b> <br/>
-            You have requested a credit for amount by <b>{currencyFormat(lastCredit.info.requiredAmount)}</b> <br/>
+            Hi <b>{lastCredit.info.businessName}</b> <br />
+            You have requested a credit for amount by <b>{currencyFormat(lastCredit.info.requiredAmount)}</b> <br />
             and it have been ...
           </DialogContentText>
           {generateAlertByResult(lastCredit.result)}
-          
+
 
         </DialogContent>
-        <DialogActions>         
+        <DialogActions>
           <Button onClick={handleClose} color="primary" autoFocus>
             Thanks
           </Button>
         </DialogActions>
       </Dialog>
-      <View title={props.title} onSendForm={handlerOnSend}/>
-                             
-            {/* {(function(){
-            if (loading) {
-                return <div className={classes.root}>
-                            <CircularProgress />               
-                        </div>
-            } else {
-                return  <View title={props.title} onSendForm={handlerOnSend}/>
-            }
-        }).call(this)} */}
+      <View title={props.title} loading={loading} onSendForm={handlerOnSend} />
 
-        </div>
-       
-    )
+
+    </div>
+
+  )
 }
 
